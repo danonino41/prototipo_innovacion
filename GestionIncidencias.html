@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Incidencias</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <div class="dashboard-container">
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="logo.svg" style="width: 450px;" alt="Logo Southern Copper" class="logo">
+                <h1 class="company-name">SOUTHERN COPPER</h1>
+                <p class="company-subtitle">SOUTHERN PERU</p>
+            </div>
+            <nav>
+                <div class="menu-section">
+                    <p class="menu-title">MENU</p>
+                    <ul>
+                        <li><i class="material-icons">dashboard</i><a href="DashboardFinal.html">Dashboard</a></li>
+                        <li class="active"><i class="material-icons">event_note</i>Gestión de Incidencias</li>
+                        <li><i class="material-icons">cloud</i><a href="#">Sensores de aire</a></li>
+                        <li><i class="material-icons">opacity</i><a href="#">Sensores de Agua</a></li>
+                        <li><i class="material-icons">grass</i><a href="#">Sensores de Suelo</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h2>Gestión de Incidencias — Registro y Seguimiento</h2>
+            </header>
+
+            <div class="incidents-layout">
+                <section class="incident-form-column">
+                    <div class="card incident-form-card">
+                        <h3>Registrar Nueva Incidencia</h3>
+                        <form id="incident-form">
+                            <div class="form-group">
+                                <label for="sensor-type">Tipo de Sensor afectado:</label>
+                                <select id="sensor-type" required>
+                                    <option value="">Seleccione un tipo</option>
+                                    <option value="Aire">Aire</option>
+                                    <option value="Agua">Agua</option>
+                                    <option value="Suelo">Suelo</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="location">Ubicación / Zona:</label>
+                                <input type="text" id="location" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="severity">Prioridad:</label>
+                                <select id="severity" required>
+                                    <option value="Baja">Baja</option>
+                                    <option value="Media">Media</option>
+                                    <option value="Alta">Alta</option>
+                                    <option value="Crítica">Crítica</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Descripción del Problema:</label>
+                                <textarea id="description" rows="3" required></textarea>
+                            </div>
+
+                            <button type="submit" class="submit-button">
+                                <i class="material-icons">add_circle</i> Crear Incidencia
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <section class="incident-list-column">
+                    <div class="card incident-list-card">
+                        <div class="incident-list-header">
+                            <h3>Listado de Incidencias</h3>
+                            <div class="filter-controls">
+                                <label for="status-filter">Filtrar por Estado:</label>
+                                <select id="status-filter">
+                                    <option value="Todos">Todos</option>
+                                    <option value="Abierta">Abierta</option>
+                                    <option value="En Progreso">En Progreso</option>
+                                    <option value="Cerrada">Cerrada</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="incidents-container" id="incidents-container">
+                            <p class="no-incidents-msg">No hay incidencias registradas.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="incidencias.js"></script>
+</body>
+
+</html>

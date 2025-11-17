@@ -1,27 +1,43 @@
 :root {
     /* --- PALETA CORPORATIVA ROJA (Sidebar) --- */
-    --primary-red: #8B0000; /* Rojo principal (Southern Copper) */
-    --hover-red: #A52A2A;   /* Rojo para el efecto hover */
-    
+    --primary-red: #8B0000;
+    /* Rojo principal (Southern Copper) */
+    --hover-red: #A52A2A;
+    /* Rojo para el efecto hover */
+
     /* --- COLORES GENERALES --- */
-    --text-dark-gray: #333333; /* Texto principal (negro/gris oscuro) */
-    --text-light-gray: #555555; /* Texto secundario, títulos de menú */
-    --secondary-bg: #f5f5f5; /* Fondo general de la aplicación */
-    --sidebar-bg: #ffffff; /* Fondo del sidebar y elementos blancos */
+    --text-dark-gray: #333333;
+    /* Texto principal (negro/gris oscuro) */
+    --text-light-gray: #555555;
+    /* Texto secundario, títulos de menú */
+    --secondary-bg: #f5f5f5;
+    /* Fondo general de la aplicación */
+    --sidebar-bg: #ffffff;
+    /* Fondo del sidebar y elementos blancos */
 
     /* --- FONDOS DEL DASHBOARD (Diseño Grisáceo/Oscuro) --- */
-    --card-quality-bg: #e5e5f0; /* Fondo para Tarjetas de Calidad (Gris/Morado claro) */
-    --alerts-dark-bg: #555569; /* Fondo para Alertas Recientes (Gris Oscuro) */
-    --alerts-text-light: #ffffff; /* Color de letra en el bloque de Alertas */
-    --alerts-time-light: #c0c0c0; /* Color de la hora/prioridad en el bloque de Alertas */
-    --map-green-bg: #b9d79e; /* Fondo de simulación del Mapa (Verde/Tierra) */
-    --card-bg: #ffffff; /* Fondo para Historial */
+    --card-quality-bg: #e5e5f0;
+    /* Fondo para Tarjetas de Calidad (Gris/Morado claro) */
+    --alerts-dark-bg: #555569;
+    /* Fondo para Alertas Recientes (Gris Oscuro) */
+    --alerts-text-light: #ffffff;
+    /* Color de letra en el bloque de Alertas */
+    --alerts-time-light: #c0c0c0;
+    /* Color de la hora/prioridad en el bloque de Alertas */
+    --map-green-bg: #b9d79e;
+    /* Fondo de simulación del Mapa (Verde/Tierra) */
+    --card-bg: #ffffff;
+    /* Fondo para Historial */
 
     /* --- COLORES DE ESTADO (Funcionalidad) --- */
-    --alerta-color: #ffc107; /* Amarillo (Alerta) */
-    --peligro-color: #f44336; /* Rojo (Peligro) */
-    --normal-color: #4caf50; /* Verde (Normal) */
+    --alerta-color: #ffc107;
+    /* Amarillo (Alerta) */
+    --peligro-color: #f44336;
+    /* Rojo (Peligro) */
+    --normal-color: #4caf50;
+    /* Verde (Normal) */
 }
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -47,7 +63,7 @@ body {
     background-color: var(--sidebar-bg);
     padding: 20px 0;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
-    display: flex; 
+    display: flex;
     flex-direction: column;
 }
 
@@ -58,7 +74,7 @@ body {
 }
 
 .sidebar-header .logo {
-    width: 100px; 
+    width: 100px;
     height: auto;
     max-width: 80%;
 }
@@ -72,8 +88,16 @@ body {
     padding: 0 20px;
 }
 
+.menu-section a {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .menu-title {
-    color: var(--text-light-gray); 
+    color: var(--text-light-gray);
     font-size: 0.8em;
     font-weight: bold;
     margin-bottom: 15px;
@@ -96,14 +120,18 @@ body {
 
 /* Hover (pasar el mouse por encima) */
 .sidebar li:hover {
-    background-color: var(--hover-red); /* Fondo rojo al hacer hover */
-    color: var(--sidebar-bg); /* Letras blancas al hacer hover */
+    background-color: var(--hover-red);
+    /* Fondo rojo al hacer hover */
+    color: var(--sidebar-bg);
+    /* Letras blancas al hacer hover */
 }
 
 /* Estado Activo */
 .sidebar li.active {
-    background-color: var(--primary-red); /* Fondo rojo principal para el activo */
-    color: white; /* Letras blancas para el activo */
+    background-color: var(--primary-red);
+    /* Fondo rojo principal para el activo */
+    color: white;
+    /* Letras blancas para el activo */
     font-weight: bold;
 }
 
@@ -136,21 +164,21 @@ body {
 
 .two-column-layout {
     display: flex;
-    gap: 20px; 
+    gap: 20px;
 }
 
 /* COLUMNA 1: Contenido Principal (Calidades, Mapa, Historial) */
 .main-content-column {
-    flex-grow: 1; 
+    flex-grow: 1;
     display: flex;
-    flex-direction: column; 
-    gap: 20px; 
+    flex-direction: column;
+    gap: 20px;
 }
 
 /* COLUMNA 2: Alertas Recientes */
 .recent-alerts-column {
-    width: 350px; 
-    flex-shrink: 0; 
+    width: 350px;
+    flex-shrink: 0;
 }
 
 
@@ -168,51 +196,60 @@ body {
 
 .quality-card {
     /* Estilo de la nueva imagen */
-    background-color: var(--card-quality-bg); 
+    background-color: var(--card-quality-bg);
     color: var(--text-dark-gray);
-    
-    display: flex; 
+
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 15px 20px; 
+    padding: 15px 20px;
     text-align: center;
     flex: 1;
 }
 
 .card-title {
-    font-size: 0.85em; 
+    font-size: 0.85em;
     color: var(--text-light-gray);
     margin-bottom: 5px;
 }
 
 .quality-card .value {
-    font-size: 2.2em; 
+    font-size: 2.2em;
     font-weight: 600;
     margin: 5px 0 10px;
     line-height: 1.1;
 }
 
 .quality-card .unit {
-    font-size: 0.5em; 
+    font-size: 0.5em;
     font-weight: normal;
     color: var(--text-light-gray);
 }
 
 .status-tag {
     display: inline-block;
-    padding: 3px 10px; 
+    padding: 3px 10px;
     border-radius: 20px;
-    font-size: 0.7em; 
+    font-size: 0.7em;
     font-weight: bold;
     color: white;
     text-transform: uppercase;
-    margin-bottom: 5px; 
+    margin-bottom: 5px;
 }
 
-.status-tag.alerta { background-color: var(--alerta-color); color: var(--text-dark-gray); }
-.status-tag.normal { background-color: var(--normal-color); }
-.status-tag.peligro { background-color: var(--peligro-color); }
+.status-tag.alerta {
+    background-color: var(--alerta-color);
+    color: var(--text-dark-gray);
+}
+
+.status-tag.normal {
+    background-color: var(--normal-color);
+}
+
+.status-tag.peligro {
+    background-color: var(--peligro-color);
+}
 
 .quality-card .label {
     font-size: 0.7em;
@@ -223,12 +260,14 @@ body {
 /* --- COLUMNA 2: ALERTAS RECIENTES (RECENT ALERTS) --- */
 
 .recent-alerts {
-    width: 100%; 
-    background-color: var(--alerts-dark-bg); /* Fondo gris oscuro */
+    width: 100%;
+    background-color: var(--alerts-dark-bg);
+    /* Fondo gris oscuro */
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    color: var(--alerts-text-light); /* Texto principal blanco */
+    color: var(--alerts-text-light);
+    /* Texto principal blanco */
     /* Asegurar que el contenedor tenga una altura mínima para llenar la columna */
     min-height: 100%;
 }
@@ -246,26 +285,27 @@ body {
 }
 
 .alert-item {
-    padding: 10px 15px; 
+    padding: 10px 15px;
     border-radius: 4px;
     font-size: 0.9em;
     line-height: 1.2;
-    background-color: transparent !important; 
-    color: var(--alerts-text-light); 
+    background-color: transparent !important;
+    color: var(--alerts-text-light);
 }
 
-.alert-item.alerta { 
-    border-left: 5px solid var(--alerta-color); 
+.alert-item.alerta {
+    border-left: 5px solid var(--alerta-color);
     font-weight: 500;
 }
-.alert-item.peligro { 
-    border-left: 5px solid var(--peligro-color); 
+
+.alert-item.peligro {
+    border-left: 5px solid var(--peligro-color);
     font-weight: 500;
 }
 
 .alert-item .alert-time {
-    font-size: 0.8em; 
-    color: var(--alerts-time-light); 
+    font-size: 0.8em;
+    color: var(--alerts-time-light);
     margin-top: 3px;
     font-weight: normal;
 }
@@ -274,17 +314,17 @@ body {
 /* --- FILA 2: CONTENEDOR DEL MAPA (MAP CONTAINER) --- */
 
 .map-container-row {
-    flex-grow: 1; 
+    flex-grow: 1;
 }
 
 .map-container {
     position: relative;
-    background-color: var(--map-green-bg); 
+    background-color: var(--map-green-bg);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     min-height: 400px;
-    padding: 0; 
+    padding: 0;
 }
 
 /* Estilos de la imagen del mapa */
@@ -296,8 +336,8 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1; 
-    border-radius: 8px; 
+    z-index: 1;
+    border-radius: 8px;
 }
 
 .map-container::before {
@@ -306,18 +346,19 @@ body {
 
 .sensor-info-box {
     position: absolute;
-    top: 20px; 
+    top: 20px;
     left: 20px;
     background-color: rgba(255, 255, 255, 1);
     padding: 10px;
     border-radius: 4px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 10;
-    width: 150px; 
-    font-size: 0.85em; 
+    width: 150px;
+    font-size: 0.85em;
     /* ❌ CORRECCIÓN 2: Se eliminó el borde izquierdo fijo (ej: border-left: 5px solid var(--peligro-color);) */
     /* Lo manejamos con JS, pero al quitar la propiedad, aseguramos que se muestre sin franja. */
-    border-left: none; /* Aseguramos que no haya borde por defecto */
+    border-left: none;
+    /* Aseguramos que no haya borde por defecto */
 }
 
 .sensor-info-box .box-title {
@@ -341,38 +382,44 @@ body {
 }
 
 /* 🟢 COLORES DE ESTADO (Prioridad de Peligro) */
-.sensor-point.peligro { background-color: var(--peligro-color); }
-.sensor-point.alerta { background-color: var(--alerta-color); }
-.sensor-point.normal { background-color: var(--normal-color); }
+.sensor-point.peligro {
+    background-color: var(--peligro-color);
+}
+
+.sensor-point.alerta {
+    background-color: var(--alerta-color);
+}
+
+.sensor-point.normal {
+    background-color: var(--normal-color);
+}
 
 /* 🌳 NUEVOS COLORES DE TIPO DE SENSOR */
 /* Se usarán si quieres que los puntos siempre reflejen el tipo de sensor, 
    independientemente de su estado. */
 
 /* Sensores de Tierra (Verde) */
-.sensor-point.soil { 
-    background-color: #4CAF50; /* O un verde tierra, si prefieres: #8B4513 (marrón) */
+.sensor-point.soil {
+    background-color: #4CAF50;
+    /* O un verde tierra, si prefieres: #8B4513 (marrón) */
 }
 
 /* Sensores de Agua (Azul) */
-.sensor-point.water { 
-    background-color: #2196F3; /* Azul */
+.sensor-point.water {
+    background-color: #2196F3;
+    /* Azul */
 }
 
 /* Sensores de Aire (Naranja) */
-.sensor-point.air { 
-    background-color: #FF9800; /* Naranja */
+.sensor-point.air {
+    background-color: #FF9800;
+    /* Naranja */
 }
 
 /* --- FILA 3: HISTORIAL DE LECTURAS (HISTORY TABLE) --- */
-
-.history-table-row {
-    /* Contenedor de la fila */
-}
-
 .history-table-container {
-    width: 100%; 
-    background-color: var(--card-bg); 
+    width: 100%;
+    background-color: var(--card-bg);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -407,7 +454,7 @@ body {
     right: 0;
     background-color: white;
     min-width: 120px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 100;
     border-radius: 4px;
     overflow: hidden;
@@ -426,7 +473,7 @@ body {
 }
 
 .dropdown-content a:hover {
-    background-color: var(--primary-red); 
+    background-color: var(--primary-red);
     color: white;
 }
 
@@ -436,7 +483,8 @@ body {
     font-size: 0.9em;
 }
 
-.history-table th, .history-table td {
+.history-table th,
+.history-table td {
     padding: 10px 5px;
     text-align: left;
     border-bottom: 1px solid #eee;
@@ -449,13 +497,24 @@ body {
 }
 
 /* Colores de estado en la tabla */
-.status-col.alerta { color: var(--alerta-color); font-weight: bold; }
-.status-col.peligro { color: var(--peligro-color); font-weight: bold; }
-.status-col.normal { color: var(--normal-color); }
+.status-col.alerta {
+    color: var(--alerta-color);
+    font-weight: bold;
+}
+
+.status-col.peligro {
+    color: var(--peligro-color);
+    font-weight: bold;
+}
+
+.status-col.normal {
+    color: var(--normal-color);
+}
 
 /* --- Estilo del Botón de Actualización --- */
 .update-button {
-    background-color: var(--primary-red); /* Usamos el rojo corporativo */
+    background-color: var(--primary-red);
+    /* Usamos el rojo corporativo */
     color: white;
     border: none;
     padding: 10px 15px;
@@ -476,4 +535,176 @@ body {
 
 .update-button:active {
     transform: scale(0.98);
+}
+
+/* Contenedor principal de la sección de incidencias */
+.incidents-layout {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Columna del formulario (30%) */
+.incident-form-column {
+    flex: 0 0 350px;
+}
+
+/* Columna de la lista (Restante) */
+.incident-list-column {
+    flex-grow: 1;
+}
+
+/* Estilo general para las cards */
+.incident-form-card,
+.incident-list-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos del formulario */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.submit-button {
+    background-color: var(--hover-red);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: var(--primary-red);
+}
+
+/* Estilos de la lista de incidencias */
+.incident-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.filter-controls label,
+.filter-controls select {
+    font-size: 14px;
+}
+
+.incidents-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Estilo para cada item de incidencia */
+.incident-item {
+    background: #f7f7f7;
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+.incident-item:hover {
+    background: #f1f1f1;
+}
+
+.incident-details {
+    flex-grow: 1;
+}
+
+.incident-details p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.incident-details strong {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Etiquetas de estado */
+.status-tag-incident {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    min-width: 90px;
+    text-align: center;
+}
+
+.status-abierta {
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+    border: 1px solid #faebcc;
+}
+
+.status-en-progreso {
+    background-color: #d9edf7;
+    color: #31708f;
+    border: 1px solid #bce8f1;
+}
+
+.status-cerrada {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+}
+
+.status-critica {
+    background-color: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+}
+
+.incident-controls select {
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Mensaje de no incidencias */
+.no-incidents-msg {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+    font-style: italic;
 }
