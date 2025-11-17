@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Sensor - Southern Copper</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="logo.svg" style="width: 450px;" alt="Logo Southern Copper" class="logo">
+                <h1 class="company-name">SOUTHERN COPPER</h1>
+                <p class="company-subtitle">SOUTHERN PERU</p>
+            </div>
+            <nav>
+                <div class="menu-section">
+                    <p class="menu-title">MENU</p>
+                    <ul>
+                        <li><a href="DashboardFinal.html"><i class="material-icons">dashboard</i>Dashboard</a></li>
+                        <li>
+                            <a href="GestionIncidencias.html">
+                                <i class="material-icons">event_note</i>Gestión de Incidencias
+                            </a>
+                        </li>
+                        <li><a href="SensorDetail.html?type=aire"><i class="material-icons">cloud</i>Sensores de
+                                Aire</a></li>
+                        <li><a href="SensorDetail.html?type=agua"><i class="material-icons">opacity</i>Sensores de
+                                Agua</a></li>
+                        <li><a href="SensorDetail.html?type=suelo"><i class="material-icons">grass</i>Sensores de
+                                Suelo</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <div>
+                    <h2 id="detail-title">Cargando Detalle del Sensor...</h2>
+                    <p id="detail-subtitle">Análisis de historial y alertas.</p>
+                </div>
+            </header>
+
+            <div class="two-column-layout">
+
+                <section class="main-content-column">
+                    <div class="card chart-container-card">
+                        <h3>Historial de Lecturas (<span id="chart-sensor-type"></span>)</h3>
+                        <div class="chart-box">
+                            <canvas id="historyChart"></canvas>
+                        </div>
+                        <p class="chart-summary" id="chart-summary">Últimas 10 lecturas registradas.</p>
+                    </div>
+                </section>
+
+                <aside class="recent-alerts-column">
+                    <div class="recent-alerts dark-bg">
+                        <h3>Alertas Últimos 2 Minutos</h3>
+                        <div class="alert-list" id="recent-alerts-list">
+                            <p style="text-align: center; color: #aaa;">Cargando alertas...</p>
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="detailScript.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -36,6 +36,11 @@
     /* Rojo (Peligro) */
     --normal-color: #4caf50;
     /* Verde (Normal) */
+
+    --card-bg: #ffffff;
+    --text-primary: #333956;
+    --box-shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
 }
 
 * {
@@ -51,20 +56,23 @@ body {
     line-height: 1.6;
 }
 
-/* Contenedor Principal del Dashboard */
 .dashboard-container {
     display: flex;
     min-height: 100vh;
 }
 
-/* --- Sidebar (Menú Lateral) --- */
 .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 250px;
+    height: 100vh;
+    overflow-y: auto;
     background-color: var(--sidebar-bg);
-    padding: 20px 0;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
+    color: var(--text-color);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    padding: 0;
 }
 
 /* Estilos para el logo en el sidebar */
@@ -141,7 +149,10 @@ body {
 }
 
 .main-content {
-    flex-grow: 1;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+    background-color: var(--main-bg);
     padding: 30px;
 }
 
@@ -707,4 +718,70 @@ body {
     color: #999;
     padding: 20px;
     font-style: italic;
+}
+
+/* ---------------------------------------------------------------------- */
+/* ESTILOS DE LA SECCIÓN PRINCIPAL DEL GRÁFICO */
+/* ---------------------------------------------------------------------- */
+
+.card.chart-container-card {
+    /* Base de la tarjeta */
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 25px 30px;
+    /* Aumentamos el padding para aire */
+    box-shadow: var(--box-shadow-subtle);
+    /* Sombra suave para levantar la tarjeta */
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+
+.card.chart-container-card:hover {
+    transform: translateY(-2px);
+    /* Efecto sutil al pasar el ratón */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+    /* Estilo del título */
+    color: var(--text-primary);
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 5px;
+    border-left: 5px solid #6c7ff5;
+    /* Línea de acento moderna */
+    padding-left: 10px;
+}
+
+#chart-sensor-type {
+    /* El tipo de sensor (Aire/Agua/Suelo) */
+    color: #6c7ff5;
+    /* Color de acento fuerte */
+    font-weight: 900;
+}
+
+/* Contenedor del Canvas */
+.chart-box {
+    position: relative;
+    height: 350px;
+    /* Altura fija para el gráfico */
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#historyChart {
+    /* Asegurar que el canvas ocupe el espacio */
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.chart-summary {
+    /* Resumen debajo del gráfico */
+    color: #888;
+    font-size: 0.95em;
+    font-style: italic;
+    border-top: 1px dashed #eee;
+    padding-top: 10px;
+    margin-top: 15px;
 }

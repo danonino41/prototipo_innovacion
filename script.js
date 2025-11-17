@@ -1,64 +1,58 @@
-const states = ['Normal', 'Alerta', 'Peligro'];
+const API_READ_URL = 'https://servicio-iot-get-965769718448.northamerica-south1.run.app';
+const API_WRITE_URL = 'https://servicio-iot-965769718448.northamerica-south1.run.app';
+
+let globalHistoryData = [];
 
 const sensorLocations = [
-    { id: 'suelo1', type: 'suelo', status: 'Peligro', top: '70%', left: '30%', info: { title: 'Sensor Suelo C1', value: '934 ppm', status: 'Peligro', location: 'Zona C' } },
-    { id: 'suelo2', type: 'suelo', status: 'Alerta', top: '55%', left: '15%' },
-    { id: 'suelo3', type: 'suelo', status: 'Normal', top: '45%', left: '55%' },
-    { id: 'suelo4', type: 'suelo', status: 'Alerta', top: '80%', left: '70%' },
-    { id: 'suelo5', type: 'suelo', status: 'Normal', top: '35%', left: '85%' },
-    { id: 'agua1', type: 'agua', status: 'Normal', top: '85%', left: '5%' },
-    { id: 'agua2', type: 'agua', status: 'Peligro', top: '90%', left: '40%' },
-    { id: 'agua3', type: 'agua', status: 'Alerta', top: '60%', left: '5%' },
-    { id: 'agua4', type: 'agua', status: 'Normal', top: '55%', left: '35%' },
-    { id: 'agua5', type: 'agua', status: 'Alerta', top: '75%', left: '90%' },
-    { id: 'aire1', type: 'aire', status: 'Alerta', top: '30%', left: '60%' },
-    { id: 'aire2', type: 'aire', status: 'Normal', top: '15%', left: '40%' },
-    { id: 'aire3', type: 'aire', status: 'Peligro', top: '5%', left: '20%' },
-    { id: 'aire4', type: 'aire', status: 'Alerta', top: '40%', left: '75%' },
-    { id: 'aire5', type: 'aire', status: 'Normal', top: '25%', left: '5%' },
-];
-
-const initialData = {
-    aire: { value: 16.8, unit: 'µg/m³', status: 'Alerta', label: 'PM2.5' },
-    agua: { value: 0.037, unit: 'mg/L', status: 'Normal', label: 'Metales' },
-    suelo: { value: 934, unit: 'ppm', status: 'Peligro', label: 'pH/Metales' },
-};
-
-let currentHistory = [
-    { fecha: '8/10/2025, 11:28:33 a. m.', sensor: 'aire', valor: '0.438 mg/L', ubicacion: 'Pozo B2', estado: 'Alerta' },
-    { fecha: '8/10/2025, 11:28:33 a. m.', sensor: 'aire', valor: '5.6 µg/m³', ubicacion: 'Sector A1', estado: 'Alerta' },
-    { fecha: '8/10/2025, 11:28:33 a. m.', sensor: 'suelo', valor: '167 ppm', ubicacion: 'Zona C', estado: 'Alerta' },
-    { fecha: '8/10/2025, 11:28:33 a. m.', sensor: 'agua', valor: '0.03 mg/L', ubicacion: 'Pozo B2', estado: 'Peligro' },
-    { fecha: '8/10/2025, 11:28:33 a. m.', sensor: 'aire', valor: '10 µg/m³', ubicacion: 'Sector A1', estado: 'Normal' },
-];
-
-let currentAlerts = [
-    { status: 'alerta', text: 'PM2.5 elevado en sector A1', time: '11:42:58 a. m.' },
-    { status: 'peligro', text: 'contaminación en agua detectada', time: '11:42:50 a. m.' },
-    { status: 'alerta', text: 'PM2.5 elevado en sector A1', time: '11:42:58 a. m.' },
-    { status: 'alerta', text: 'niveles de metales en agua por encima de lo esperado', time: '11:32:14 a. m.' },
-    { status: 'alerta', text: 'metales en suelo en rango medio', time: '11:30:10 a. m.' },
-    { status: 'peligro', text: 'PM2.5 muy alto en sector A1', time: '11:15:25 a. m.' },
+    { id: 'suelo1', type: 'suelo', top: '70%', left: '30%', location: 'Zona C1' },
+    { id: 'suelo2', type: 'suelo', top: '55%', left: '15%', location: 'Zona C2' },
+    { id: 'suelo3', type: 'suelo', top: '45%', left: '55%', location: 'Zona C3' },
+    { id: 'agua1', type: 'agua', top: '85%', left: '5%', location: 'Pozo B1' },
+    { id: 'agua2', type: 'agua', top: '90%', left: '40%', location: 'Pozo B2' },
+    { id: 'aire1', type: 'aire', top: '30%', left: '60%', location: 'Sector A1' },
+    { id: 'aire2', type: 'aire', top: '15%', left: '40%', location: 'Sector A2' },
 ];
 
 
-const getRandomValue = (min, max) => (Math.random() * (max - min) + min).toFixed(3);
-const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+// --- Funciones de Utilidad ---
 
+function updateQualityCards(airData, waterData, soilData) {
+    const updateCard = (id, data) => {
+        if (!data || data.value === undefined) return;
+        document.getElementById(`${id}-value`).innerHTML = `${data.value} <span class="unit">${data.unit || ''}</span>`;
+        document.getElementById(`${id}-status`).textContent = data.status || 'N/A';
+        document.getElementById(`${id}-status`).className = `status-tag ${data.status ? data.status.toLowerCase() : 'normal'}`;
+    };
 
-function updateQualityCards(aireVal, aireStatus, aguaVal, aguaStatus, sueloVal, sueloStatus) {
-    document.getElementById('aire-value').textContent = aireVal;
-    document.getElementById('aire-status').textContent = aireStatus;
-    document.getElementById('aire-status').className = `status-tag ${aireStatus.toLowerCase()}`;
-
-    document.getElementById('agua-value').textContent = aguaVal;
-    document.getElementById('agua-status').textContent = aguaStatus;
-    document.getElementById('agua-status').className = `status-tag ${aguaStatus.toLowerCase()}`;
-
-    document.getElementById('suelo-value').textContent = sueloVal;
-    document.getElementById('suelo-status').textContent = sueloStatus;
-    document.getElementById('suelo-status').className = `status-tag ${sueloStatus.toLowerCase()}`;
+    updateCard('aire', airData);
+    updateCard('agua', waterData);
+    updateCard('suelo', soilData);
 }
+
+function renderAlerts(alerts) {
+    const list = document.getElementById('alert-list');
+    list.innerHTML = '';
+
+    alerts.forEach(item => {
+        const div = document.createElement('div');
+        div.className = `alert-item ${item.status.toLowerCase()}`;
+        div.innerHTML = `
+            <i class="material-icons">warning</i>
+            <div class="alert-content">
+                <p class="alert-text">
+                    <strong>${item.sensor}</strong> en ${item.location}: ${item.text}.
+                </p>
+                <span class="alert-time">${item.time}</span>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+
+    if (list.children.length === 0) {
+        list.innerHTML = '<p style="color: #ccc; text-align: center; padding: 20px;">No hay alertas activas.</p>';
+    }
+}
+
 
 function renderHistoryTable(history, filter = 'Todos') {
     const tbody = document.getElementById('history-body');
@@ -66,32 +60,20 @@ function renderHistoryTable(history, filter = 'Todos') {
 
     const filteredHistory = history.filter(item => {
         if (filter === 'Todos') return true;
+
         return item.sensor.toLowerCase() === filter.toLowerCase();
     });
 
-    filteredHistory.forEach(item => {
+    filteredHistory.forEach(log => {
         const row = tbody.insertRow();
+        const statusText = log.estado || 'Normal';
         row.innerHTML = `
-            <td>${item.fecha}</td>
-            <td>${item.sensor}</td>
-            <td>${item.valor}</td>
-            <td>${item.ubicacion}</td>
-            <td class="status-col ${item.estado.toLowerCase()}">${item.estado}</td>
+            <td>${log.fecha}</td>
+            <td>${log.sensor}</td>
+            <td>${log.valor}</td>
+            <td>${log.ubicacion}</td>
+            <td><span class="status-tag ${statusText.toLowerCase()}">${statusText}</span></td>
         `;
-    });
-}
-
-function renderAlerts(alerts) {
-    const list = document.getElementById('alert-list');
-    list.innerHTML = '';
-    alerts.forEach(item => {
-        const div = document.createElement('div');
-        div.className = `alert-item ${item.status.toLowerCase()}`;
-        div.innerHTML = `
-            ${item.text}
-            <span class="alert-time">Prioridad | ${item.time}</span>
-        `;
-        list.appendChild(div);
     });
 }
 
@@ -101,136 +83,264 @@ function updateSensorInfoBox(info) {
     document.getElementById('box-value').textContent = info.value;
     document.getElementById('box-status').textContent = info.status;
     document.getElementById('box-location').textContent = info.location;
-
-    const statusColor = getComputedStyle(document.documentElement).getPropertyValue(`--${info.status.toLowerCase()}-color`).trim() || '#f44336';
-    box.style.borderLeft = `5px solid ${statusColor}`;
+    box.style.borderLeft = `5px solid ${info.status.toLowerCase() === 'peligro' ? 'red' : 'blue'}`;
 }
 
 
-function renderSensorPoints(locations) {
+function renderSensorPoints(locations, currentData) {
     const mapContainer = document.querySelector('.map-container');
     mapContainer.querySelectorAll('.sensor-point').forEach(p => p.remove());
 
     locations.forEach(sensor => {
-        const point = document.createElement('div');
+        const sensorTypeData = currentData[sensor.type] || { status: 'Normal', value: 'N/A', unit: '' };
+        const status = sensorTypeData.status || 'Normal';
 
-        point.className = `sensor-point ${sensor.type} ${sensor.status.toLowerCase()}`;
+        const point = document.createElement('div');
+        point.className = `sensor-point ${sensor.type} ${status.toLowerCase()}`;
         point.style.top = sensor.top;
         point.style.left = sensor.left;
         point.dataset.id = sensor.id;
 
         point.addEventListener('click', () => {
-            let value;
-            if (sensor.type === 'aire') {
-                value = initialData.aire.value + ' ' + initialData.aire.unit;
-            } else if (sensor.type === 'agua') {
-                value = initialData.agua.value + ' ' + initialData.agua.unit;
-            } else { // suelo
-                value = initialData.suelo.value + ' ' + initialData.suelo.unit;
-            }
-
             updateSensorInfoBox({
-                title: `Sensor ${sensor.type.toUpperCase()}`,
-                value: value,
-                status: sensor.status,
-                location: sensor.id.toUpperCase()
+                title: `Sensor ${sensor.type.toUpperCase()} (${sensor.id.toUpperCase()})`,
+                value: sensorTypeData.value + ' ' + sensorTypeData.unit,
+                status: status,
+                location: sensor.location,
             });
         });
 
         mapContainer.appendChild(point);
     });
 
-    const initialSensor = locations.find(s => s.info) || locations[0];
-    updateSensorInfoBox({
-        title: initialSensor.info?.title || `Sensor ${initialSensor.type.toUpperCase()}`,
-        value: initialSensor.info?.value || initialData[initialSensor.type].value + ' ' + initialData[initialSensor.type].unit,
-        status: initialSensor.info?.status || initialSensor.status,
-        location: initialSensor.info?.location || initialSensor.id.toUpperCase(),
-    });
+    const initialSensor = locations.find(s => s.type === 'suelo') || locations[0];
+    const initialData = currentData[initialSensor.type];
+    if (initialData) {
+        updateSensorInfoBox({
+            title: `Sensor ${initialSensor.type.toUpperCase()} (${initialSensor.id.toUpperCase()})`,
+            value: initialData.value + ' ' + initialData.unit,
+            status: initialData.status,
+            location: initialSensor.location,
+        });
+    }
+}
+
+function generateAlerts(currentData) {
+    const alerts = [];
+    const now = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+    const check = (data, sensor, location) => {
+        if (data && data.status && data.status.toLowerCase() !== 'normal') {
+            alerts.push({
+                status: data.status,
+                sensor: sensor,
+                location: location,
+                text: `${data.label} (${data.value}${data.unit}) está en nivel de ${data.status}.`,
+                time: now
+            });
+        }
+    };
+
+    check(currentData.air, 'Calidad del Aire', 'Sector A');
+    check(currentData.water, 'Calidad del Agua', 'Pozo B');
+    check(currentData.soil, 'Calidad del Suelo', 'Zona C');
+
+    return alerts;
+}
+
+/**
+ * Obtiene los datos actuales y de historial desde la Cloud Function de lectura.
+ */
+async function fetchData() {
+    console.log('Obteniendo datos de Google Cloud...');
+    const updateButton = document.getElementById('update-data-btn');
+    updateButton.disabled = true;
+    updateButton.classList.add('loading');
+
+    try {
+        const response = await fetch(API_READ_URL, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: Falló la conexión con la API de lectura.`);
+        }
+
+        const data = await response.json();
+        const currentData = data.current;
+
+        globalHistoryData = [];
+
+        data.history.forEach(log => {
+            const baseDate = new Date(log.timestamp).toLocaleString('es-PE');
+
+            const addEntry = (sensorType, data) => {
+                if (data && data.value !== undefined) {
+                    globalHistoryData.push({
+                        fecha: baseDate,
+                        sensor: sensorType,
+                        valor: `${data.value} ${data.unit}`,
+                        ubicacion: data.location || 'N/A',
+                        estado: data.status || 'Normal',
+                    });
+                }
+            };
+
+            addEntry('Aire', log.air);
+            addEntry('Agua', log.water);
+            addEntry('Suelo', log.soil);
+        });
+
+        updateQualityCards(currentData.air, currentData.water, currentData.soil);
+
+        renderHistoryTable(globalHistoryData);
+
+        const alerts = generateAlerts(currentData);
+        renderAlerts(alerts);
+
+        renderSensorPoints(sensorLocations, currentData);
+
+        if (currentData.timestamp) {
+            const date = new Date(currentData.timestamp);
+            document.getElementById('last-update').textContent = `Última actualización: ${date.toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'medium', hour12: true })}`;
+        }
+
+    } catch (error) {
+        console.error('Error al cargar los datos:', error);
+        document.getElementById('last-update').textContent = 'Error: Falló la conexión con la API.';
+    } finally {
+        updateButton.disabled = false;
+        updateButton.classList.remove('loading');
+    }
+}
+
+/**
+ * Función para generar datos simulados y enviarlos a Firestore 
+ * usando tu Cloud Function 'recibirLecturas'.
+ */
+const getRandomValue = (min, max) => (Math.random() * (max - min) + min).toFixed(3);
+const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const getStatus = (value, threshold) => (parseFloat(value) > threshold) ? 'Peligro' : (parseFloat(value) > threshold * 0.7) ? 'Alerta' : 'Normal';
+
+
+async function sendSimulatedData() {
+    const airValue = getRandomValue(5, 50);
+    const waterValue = getRandomValue(0.01, 0.2);
+    const soilValue = getRandomInt(100, 1500);
+
+    const simulatedData = {
+        air: {
+            value: airValue,
+            unit: 'µg/m³',
+            status: getStatus(airValue, 40),
+            location: 'Sector A1',
+            label: 'PM2.5'
+        },
+        water: {
+            value: waterValue,
+            unit: 'mg/L',
+            status: getStatus(waterValue, 0.15),
+            location: 'Pozo B1',
+            label: 'Metales'
+        },
+        soil: {
+            value: soilValue,
+            unit: 'ppm',
+            status: getStatus(soilValue, 1200),
+            location: 'Zona C1',
+            label: 'pH/Metales'
+        }
+    };
+
+    console.log('Enviando datos simulados (POST)...', simulatedData);
+
+    try {
+        const response = await fetch(API_WRITE_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(simulatedData)
+        });
+
+        if (response.ok) {
+            console.log('✅ Datos simulados enviados. Actualizando dashboard...');
+            fetchData();
+        } else {
+            console.error('❌ Error al enviar datos:', response.status, await response.text());
+        }
+    } catch (error) {
+        console.error('❌ Error de red al enviar datos:', error);
+    }
 }
 
 
-function simulateNewData() {
-    const newaireValue = getRandomValue(5, 150);
-    const newaireStatus = newaireValue > 100 ? 'Peligro' : (newaireValue > 25 ? 'Alerta' : 'Normal');
-
-    const newaguaValue = getRandomValue(0.01, 1);
-    const newaguaStatus = newaguaValue > 0.5 ? 'Peligro' : (newaguaValue > 0.1 ? 'Alerta' : 'Normal');
-
-    const newsueloValue = getRandomInt(100, 1500);
-    const newsueloStatus = newsueloValue > 1200 ? 'Peligro' : (newsueloValue > 800 ? 'Alerta' : 'Normal');
-
-    updateQualityCards(newaireValue, newaireStatus, newaguaValue, newaguaStatus, newsueloValue, newsueloStatus);
-
-    const sensorTypes = ['Aire', 'Agua', 'Suelo'];
-    const randomSensor = sensorTypes[getRandomInt(0, 2)];
-    const randomLocation = ['Sector A1', 'Pozo B2', 'Zona C', 'Sector D'][getRandomInt(0, 3)];
-    const randomStatus = states[getRandomInt(0, 2)];
-    const alertTextMap = {
-        'Peligro': `Contaminación crítica de ${randomSensor.toLowerCase()} detectada`,
-        'Alerta': `Niveles de ${randomSensor.toLowerCase()} por encima del rango medio`,
-        'Normal': `Sistema de ${randomSensor.toLowerCase()} restaurado a niveles seguros`
-    };
-
-    const newAlert = {
-        status: randomStatus.toLowerCase(),
-        text: alertTextMap[randomStatus],
-        time: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }),
-    };
-
-    currentAlerts = [newAlert, ...currentAlerts.slice(0, 5)];
-    renderAlerts(currentAlerts);
-
-    const newHistoryEntry = {
-        fecha: new Date().toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }),
-        sensor: randomSensor.toLowerCase(),
-        valor: randomSensor === 'Aire' ? `${getRandomValue(5, 50)} µg/m³` : (randomSensor === 'Agua' ? `${getRandomValue(0.01, 0.5)} mg/L` : `${getRandomInt(100, 1000)} ppm`),
-        ubicacion: randomLocation,
-        estado: randomStatus,
-    };
-
-    currentHistory = [newHistoryEntry, ...currentHistory.slice(0, 4)];
-    renderHistoryTable(currentHistory);
-
-    const newSensorLocations = sensorLocations.map(s => {
-        const newStatus = states[getRandomInt(0, 2)];
-        s.status = newStatus; 
-        return s;
-    });
-    renderSensorPoints(newSensorLocations);
-
-    document.getElementById('last-update').textContent = `Última actualización: ${new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'medium', hour12: true })}`;
-}
-
+// --- INICIALIZACIÓN Y EVENT LISTENERS ---
 
 document.addEventListener('DOMContentLoaded', () => {
-    updateQualityCards(initialData.aire.value, initialData.aire.status, initialData.agua.value, initialData.agua.status, initialData.suelo.value, initialData.suelo.status);
-    renderHistoryTable(currentHistory);
-    renderAlerts(currentAlerts);
-    renderSensorPoints(sensorLocations);
-
+    fetchData();
+    highlightActiveSensorMenu();
     const updateButton = document.getElementById('update-data-btn');
     if (updateButton) {
-        updateButton.addEventListener('click', simulateNewData);
+        updateButton.addEventListener('click', sendSimulatedData);
     }
-    
-    const filterDropdown = document.querySelector('.filter-dropdown');
 
+    const filterDropdown = document.querySelector('.filter-dropdown');
     filterDropdown.addEventListener('click', (event) => {
         const target = event.target;
-        
+
         if (target.tagName === 'A' && target.hasAttribute('data-filter')) {
             event.preventDefault();
 
             const filterValue = target.getAttribute('data-filter');
-            
-            renderHistoryTable(currentHistory, filterValue);
-            
+
+            renderHistoryTable(globalHistoryData, filterValue);
+
             const filterTextNode = filterDropdown.firstChild;
             if (filterTextNode && filterTextNode.nodeType === 3) {
                 filterTextNode.textContent = `Filtro: ${filterValue}`;
             }
         }
     });
-
+    setInterval(sendSimulatedData, 10000);
 });
+
+function highlightActiveSensorMenu() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeType = urlParams.get('type');
+    const path = window.location.pathname.split('/').pop();
+
+    document.querySelectorAll('.sidebar li.active').forEach(li => {
+        li.classList.remove('active');
+    });
+
+    // --- Caso 1: Dashboard Principal ---
+    if (path === 'DashboardFinal.html') {
+        document.querySelector('.sidebar nav a[href*="DashboardFinal.html"]')
+            ?.closest('li')?.classList.add('active');
+        return;
+    }
+
+    // --- Caso 2: Gestión de Incidencias ---
+    if (path === 'GestionIncidencias.html') {
+        document.querySelector('.sidebar nav a[href*="GestionIncidencias.html"]')
+            ?.closest('li')?.classList.add('active');
+        return;
+    }
+
+    // --- Caso 3: Detalles de Sensor (SensorDetail.html?type=X) ---
+    if (path === 'SensorDetail.html' && activeType) {
+        const normalizedActiveType = activeType.toLowerCase();
+
+        const selector = `.sidebar nav a[href*="type=${normalizedActiveType}"]`;
+        const activeLink = document.querySelector(selector);
+
+        if (activeLink) {
+            activeLink.closest('li')?.classList.add('active');
+            console.log('¡Éxito! Clase "active" aplicada al sensor:', normalizedActiveType);
+        }
+
+        return;
+    }
+}

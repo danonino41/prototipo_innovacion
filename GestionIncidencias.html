@@ -23,10 +23,17 @@
                     <p class="menu-title">MENU</p>
                     <ul>
                         <li><i class="material-icons">dashboard</i><a href="DashboardFinal.html">Dashboard</a></li>
-                        <li class="active"><i class="material-icons">event_note</i>Gestión de Incidencias</li>
-                        <li><i class="material-icons">cloud</i><a href="#">Sensores de aire</a></li>
-                        <li><i class="material-icons">opacity</i><a href="#">Sensores de Agua</a></li>
-                        <li><i class="material-icons">grass</i><a href="#">Sensores de Suelo</a></li>
+                        <li>
+                            <a href="GestionIncidencias.html">
+                                <i class="material-icons">event_note</i>Gestión de Incidencias
+                            </a>
+                        </li>
+                        <li><a href="SensorDetail.html?type=aire"><i class="material-icons">cloud</i>Sensores de
+                                Aire</a></li>
+                        <li><a href="SensorDetail.html?type=agua"><i class="material-icons">opacity</i>Sensores de
+                                Agua</a></li>
+                        <li><a href="SensorDetail.html?type=suelo"><i class="material-icons">grass</i>Sensores de
+                                Suelo</a></li>
                     </ul>
                 </div>
             </nav>
@@ -103,6 +110,7 @@
     </div>
 
     <script src="incidencias.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
